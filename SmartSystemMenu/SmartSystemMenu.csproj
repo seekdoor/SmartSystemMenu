@@ -140,11 +140,11 @@
     <Compile Include="Forms\ProcessExclusionForm.Designer.cs">
       <DependentUpon>ProcessExclusionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SettingsForm.cs">
+    <Compile Include="Forms\ApplicationSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <Compile Include="Forms\ApplicationSettingsForm.Designer.cs">
+      <DependentUpon>ApplicationSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HotKeys\MouseHook.cs" />
     <Compile Include="HotKeys\HotKeyHook.cs" />
@@ -211,6 +211,7 @@
     <Compile Include="Settings\CloserSettings.cs" />
     <Compile Include="Settings\DimmerSettings.cs" />
     <Compile Include="Settings\ExcludedProcessItem.cs" />
+    <Compile Include="Settings\KeyboardShortcut.cs" />
     <Compile Include="Settings\SaveSelectedItemsSettings.cs" />
     <Compile Include="Settings\SizerSettings.cs" />
     <Compile Include="Settings\WindowSettings.cs" />
@@ -328,8 +329,8 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ApplicationSettingsForm.resx">
+      <DependentUpon>ApplicationSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TransparencyForm.resx">
       <DependentUpon>TransparencyForm.cs</DependentUpon>

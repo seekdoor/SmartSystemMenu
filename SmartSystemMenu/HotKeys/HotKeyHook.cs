@@ -14,13 +14,14 @@ namespace SmartSystemMenu.HotKeys
     {
         private IntPtr _hookHandle;
         private KeyboardHookProc _hookProc;
-        private MenuItems _menuItems;
+        public ApplicationSettings Settings { get; set; }
 
-        public event EventHandler<HotKeyEventArgs> Hooked;
+        public event EventHandler<HotKeyEventArgs> MenuItemHooked;
+        public event EventHandler<HotKeyEventArgs> MoveToHooked;
 
-        public bool Start(string moduleName, MenuItems menuItems)
+        public bool Start(ApplicationSettings settings, string moduleName)
         {
-            _menuItems = menuItems;
+            Settings = settings;
             _hookProc = HookProc;
             var moduleHandle = GetModuleHandle(moduleName);
             _hookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, _hookProc, moduleHandle, 0);
@@ -65,9 +66,75 @@ namespace SmartSystemMenu.HotKeys
             {
                 if (wParam.ToInt32() == WM_KEYDOWN || wParam.ToInt32() == WM_SYSKEYDOWN)
                 {
-                    foreach (var item in _menuItems.Items.Flatten(x => x.Items).Where(x => x.Type == MenuItemType.Item))
+                    if ((int)Settings.NextMonitor.Key3 == lParam.vkCode)
                     {
-                        if (item.Key3 == VirtualKey.None || lParam.vkCode != (int)item.Key3)
+                        var key1 = true;
+                        var key2 = true;
+
+                        if (Settings.NextMonitor.Key1 != VirtualKeyModifier.None)
+                        {
+                            var key1State = GetAsyncKeyState((int)Settings.NextMonitor.Key1) & 0x8000;
+                            key1 = Convert.ToBoolean(key1State);
+                        }
+
+                        if (Settings.NextMonitor.Key2 != VirtualKeyModifier.None)
+                        {
+                            var key2State = GetAsyncKeyState((int)Settings.NextMonitor.Key2) & 0x8000;
+                            key2 = Convert.ToBoolean(key2State);
+                        }
+
+                        if (key1 && key2)
+                        {
+                            var handler = MoveToHooked;
+                            if (handler != null)
+                            {
+                                var eventArgs = new HotKeyEventArgs();
+                                eventArgs.NextMonitor = true;
+                                handler.Invoke(this, eventArgs);
+                                if (eventArgs.Succeeded)
+                                {
+                                    return 1;
+                                }
+                            }
+                        }
+                    }
+
+                    if ((int)Settings.PreviousMonitor.Key3 == lParam.vkCode)
+                    {
+                        var key1 = true;
+                        var key2 = true;
+
+                        if (Settings.PreviousMonitor.Key1 != VirtualKeyModifier.None)
+                        {
+                            var key1State = GetAsyncKeyState((int)Settings.PreviousMonitor.Key1) & 0x8000;
+                            key1 = Convert.ToBoolean(key1State);
+                        }
+
+                        if (Settings.PreviousMonitor.Key2 != VirtualKeyModifier.None)
+                        {
+                            var key2State = GetAsyncKeyState((int)Settings.PreviousMonitor.Key2) & 0x8000;
+                            key2 = Convert.ToBoolean(key2State);
+                        }
+
+                        if (key1 && key2)
+                        {
+                            var handler = MoveToHooked;
+                            if (handler != null)
+                            {
+                                var eventArgs = new HotKeyEventArgs();
+                                eventArgs.PreviousMonitor = true;
+                                handler.Invoke(this, eventArgs);
+                                if (eventArgs.Succeeded)
+                                {
+                                    return 1;
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var item in Settings.MenuItems.Items.Flatten(x => x.Items).Where(x => x.Type == MenuItemType.Item))
+                    {
+                        if (item.Shortcut.Key3 == VirtualKey.None || lParam.vkCode != (int)item.Shortcut.Key3)
                         {
                             continue;
                         }
@@ -75,21 +142,21 @@ namespace SmartSystemMenu.HotKeys
                         var key1 = true;
                         var key2 = true;
 
-                        if (item.Key1 != VirtualKeyModifier.None)
+                        if (item.Shortcut.Key1 != VirtualKeyModifier.None)
                         {
-                            var key1State = GetAsyncKeyState((int)item.Key1) & 0x8000;
+                            var key1State = GetAsyncKeyState((int)item.Shortcut.Key1) & 0x8000;
                             key1 = Convert.ToBoolean(key1State);
                         }
 
-                        if (item.Key2 != VirtualKeyModifier.None)
+                        if (item.Shortcut.Key2 != VirtualKeyModifier.None)
                         {
-                            var key2State = GetAsyncKeyState((int)item.Key2) & 0x8000;
+                            var key2State = GetAsyncKeyState((int)item.Shortcut.Key2) & 0x8000;
                             key2 = Convert.ToBoolean(key2State);
                         }
 
-                        if (key1 && key2 && lParam.vkCode == (int)item.Key3)
+                        if (key1 && key2 && lParam.vkCode == (int)item.Shortcut.Key3)
                         {
-                            var handler = Hooked;
+                            var handler = MenuItemHooked;
                             if (handler != null)
                             {
                                 var menuItemId = MenuItemId.GetId(item.Name);
@@ -103,9 +170,9 @@ namespace SmartSystemMenu.HotKeys
                         }
                     }
 
-                    foreach (var item in _menuItems.WindowSizeItems)
+                    foreach (var item in Settings.MenuItems.WindowSizeItems)
                     {
-                        if (item.Key3 == VirtualKey.None || lParam.vkCode != (int)item.Key3)
+                        if (item.Shortcut.Key3 == VirtualKey.None || lParam.vkCode != (int)item.Shortcut.Key3)
                         {
                             continue;
                         }
@@ -113,21 +180,21 @@ namespace SmartSystemMenu.HotKeys
                         var key1 = true;
                         var key2 = true;
 
-                        if (item.Key1 != VirtualKeyModifier.None)
+                        if (item.Shortcut.Key1 != VirtualKeyModifier.None)
                         {
-                            var key1State = GetAsyncKeyState((int)item.Key1) & 0x8000;
+                            var key1State = GetAsyncKeyState((int)item.Shortcut.Key1) & 0x8000;
                             key1 = Convert.ToBoolean(key1State);
                         }
 
-                        if (item.Key2 != VirtualKeyModifier.None)
+                        if (item.Shortcut.Key2 != VirtualKeyModifier.None)
                         {
-                            var key2State = GetAsyncKeyState((int)item.Key2) & 0x8000;
+                            var key2State = GetAsyncKeyState((int)item.Shortcut.Key2) & 0x8000;
                             key2 = Convert.ToBoolean(key2State);
                         }
 
-                        if (key1 && key2 && lParam.vkCode == (int)item.Key3)
+                        if (key1 && key2 && lParam.vkCode == (int)item.Shortcut.Key3)
                         {
-                            var handler = Hooked;
+                            var handler = MenuItemHooked;
                             if (handler != null)
                             {
                                 var eventArgs = new HotKeyEventArgs(item.Id);

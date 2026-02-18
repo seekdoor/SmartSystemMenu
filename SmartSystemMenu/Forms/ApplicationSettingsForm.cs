@@ -9,14 +9,14 @@ using SmartSystemMenu.Controls;
 
 namespace SmartSystemMenu.Forms
 {
-    public partial class SettingsForm : Form
+    public partial class ApplicationSettingsForm : Form
     {
         private readonly ApplicationSettings _settings;
         private readonly CloserSettings _closerSettings;
 
         public event EventHandler<EventArgs<ApplicationSettings>> OkClick;
 
-        public SettingsForm(ApplicationSettings settings)
+        public ApplicationSettingsForm(ApplicationSettings settings)
         {
             InitializeComponent();
 
@@ -39,6 +39,7 @@ namespace SmartSystemMenu.Forms
             tabpGeneral.Text = settings.Language.GetValue("tab_settings_general");
             tabpMenuStart.Text = settings.Language.GetValue("tab_settings_menu_start");
             tabpMenuSize.Text = settings.Language.GetValue("tab_settings_menu_size");
+            tabpMenuMoveTo.Text = settings.Language.GetValue("tab_settings_menu_move_to");
             tabpMenuDimmer.Text = settings.Language.GetValue("tab_settings_menu_dimmer");
             tabpMenu.Text = settings.Language.GetValue("tab_settings_menu");
             tabpMenuSaveSelectedItems.Text = settings.Language.GetValue("tab_settings_menu_save");
@@ -50,6 +51,8 @@ namespace SmartSystemMenu.Forms
             grpbSizer.Text = settings.Language.GetValue("grpb_sizer");
             grpbDisplay.Text = settings.Language.GetValue("grpb_display");
             grpbDimmerColor.Text = settings.Language.GetValue("grpb_dimmer_color");
+            grpbNextHotkeys.Text = settings.Language.GetValue("grpb_next_hotkeys");
+            grpbPreviousHotkeys.Text = settings.Language.GetValue("grpb_previous_hotkeys");
             grpbDimmerTransparency.Text = settings.Language.GetValue("grpb_dimmer_transparency");
             chkEnableHighDPI.Text = settings.Language.GetValue("chk_enable_high_dpi");
             clmProcessExclusionName.HeaderText = settings.Language.GetValue("clm_process_exclusion_name");
@@ -96,6 +99,11 @@ namespace SmartSystemMenu.Forms
             btnApply.Text = settings.Language.GetValue("settings_btn_apply");
             btnCancel.Text = settings.Language.GetValue("settings_btn_cancel");
             Text = settings.Language.GetValue("settings_form");
+
+            txtNextHotkeys.Text = _settings.NextMonitor.ToString();
+            txtNextHotkeys.Tag = _settings.NextMonitor;
+            txtPreviousHotkeys.Text = _settings.PreviousMonitor.ToString();
+            txtPreviousHotkeys.Tag = _settings.PreviousMonitor;
 
             foreach (var processItem in settings.ExcludedProcessItems)
             {
@@ -223,16 +231,16 @@ namespace SmartSystemMenu.Forms
                         row.Cells[2].Value = dialog.MenuItem.Top.HasValue ? dialog.MenuItem.Top.ToString() : string.Empty;
                         row.Cells[3].Value = dialog.MenuItem.Width.ToString();
                         row.Cells[4].Value = dialog.MenuItem.Height.ToString();
-                        row.Cells[5].Value = dialog.MenuItem.ToString();
+                        row.Cells[5].Value = dialog.MenuItem.Shortcut.ToString();
 
                         menuItem.Title = dialog.MenuItem.Title;
                         menuItem.Left = dialog.MenuItem.Left;
                         menuItem.Top = dialog.MenuItem.Top;
                         menuItem.Width = dialog.MenuItem.Width;
                         menuItem.Height = dialog.MenuItem.Height;
-                        menuItem.Key1 = dialog.MenuItem.Key1;
-                        menuItem.Key2 = dialog.MenuItem.Key2;
-                        menuItem.Key3 = dialog.MenuItem.Key3;
+                        menuItem.Shortcut.Key1 = dialog.MenuItem.Shortcut.Key1;
+                        menuItem.Shortcut.Key2 = dialog.MenuItem.Shortcut.Key2;
+                        menuItem.Shortcut.Key3 = dialog.MenuItem.Shortcut.Key3;
                     }
                 }
 
@@ -328,16 +336,16 @@ namespace SmartSystemMenu.Forms
                         row.Cells[2].Value = dialog.MenuItem.Top.HasValue ? dialog.MenuItem.Top.ToString() : string.Empty;
                         row.Cells[3].Value = dialog.MenuItem.Width.ToString();
                         row.Cells[4].Value = dialog.MenuItem.Height.ToString();
-                        row.Cells[5].Value = dialog.MenuItem.ToString();
+                        row.Cells[5].Value = dialog.MenuItem.Shortcut.ToString();
 
                         menuItem.Title = dialog.MenuItem.Title;
                         menuItem.Left = dialog.MenuItem.Left;
                         menuItem.Top = dialog.MenuItem.Top;
                         menuItem.Width = dialog.MenuItem.Width;
                         menuItem.Height = dialog.MenuItem.Height;
-                        menuItem.Key1 = dialog.MenuItem.Key1;
-                        menuItem.Key2 = dialog.MenuItem.Key2;
-                        menuItem.Key3 = dialog.MenuItem.Key3;
+                        menuItem.Shortcut.Key1 = dialog.MenuItem.Shortcut.Key1;
+                        menuItem.Shortcut.Key2 = dialog.MenuItem.Shortcut.Key2;
+                        menuItem.Shortcut.Key3 = dialog.MenuItem.Shortcut.Key3;
                     }
                 }
             }
@@ -384,7 +392,7 @@ namespace SmartSystemMenu.Forms
                 row.Cells[2].Value = dialog.MenuItem.Top.HasValue ? dialog.MenuItem.Top.ToString() : string.Empty;
                 row.Cells[3].Value = dialog.MenuItem.Width.ToString();
                 row.Cells[4].Value = dialog.MenuItem.Height.ToString();
-                row.Cells[5].Value = dialog.MenuItem.ToString();
+                row.Cells[5].Value = dialog.MenuItem.Shortcut.ToString();
                 row.Cells[6].ToolTipText = _settings.Language.GetValue("clm_window_size_edit");
                 row.Cells[7].ToolTipText = _settings.Language.GetValue("clm_window_size_delete");
                 row.Tag = dialog.MenuItem;
@@ -498,6 +506,30 @@ namespace SmartSystemMenu.Forms
             lblTransparencyValue.Text = $"{trackbDimmerTransparency.Value}%";
         }
 
+        private void ButtonNextHotkeysClick(object sender, EventArgs e)
+        {
+            var shortcut = txtNextHotkeys.Tag as KeyboardShortcut ?? _settings.NextMonitor;
+            var form = new HotkeysForm(_settings.Language, shortcut);
+            var result = form.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtNextHotkeys.Tag = form.Shortcut;
+                txtNextHotkeys.Text = form.Shortcut.ToString();
+            }
+        }
+
+        private void ButtonPreviousHotkeysClick(object sender, EventArgs e)
+        {
+            var shortcut = txtPreviousHotkeys.Tag as KeyboardShortcut ?? _settings.PreviousMonitor;
+            var form = new HotkeysForm(_settings.Language, shortcut);
+            var result = form.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtPreviousHotkeys.Tag = form.Shortcut;
+                txtPreviousHotkeys.Text = form.Shortcut.ToString();
+            }
+        }
+
         private void ButtonChooseDimmerColorClick(object sender, EventArgs e)
         {
             var color = Color.Black;
@@ -540,12 +572,18 @@ namespace SmartSystemMenu.Forms
 
             foreach (DataGridViewRow row in gvWindowSize.Rows)
             {
-                settings.MenuItems.WindowSizeItems.Add((WindowSizeMenuItem)row.Tag);
+                if (row.Tag is WindowSizeMenuItem item)
+                {
+                    settings.MenuItems.WindowSizeItems.Add((WindowSizeMenuItem)item.Clone());
+                }
             }
 
             foreach (DataGridViewRow row in gvStartProgram.Rows)
             {
-                settings.MenuItems.StartProgramItems.Add((StartProgramMenuItem)row.Tag);
+                if (row.Tag is StartProgramMenuItem item)
+                {
+                    settings.MenuItems.StartProgramItems.Add((StartProgramMenuItem)item.Clone());
+                }
             }
 
             foreach (var processName in _settings.InitEventProcessNames)
@@ -578,6 +616,20 @@ namespace SmartSystemMenu.Forms
             settings.Sizer.ResizableByDefault = _settings.Sizer.ResizableByDefault;
             settings.EnableHighDPI = chkEnableHighDPI.Checked;
             settings.LanguageName = cmbLanguage.SelectedValue == null ? "" : cmbLanguage.SelectedValue.ToString();
+
+            if (txtNextHotkeys.Tag is KeyboardShortcut nextShortcut)
+            {
+                settings.NextMonitor.Key1 = nextShortcut.Key1;
+                settings.NextMonitor.Key2 = nextShortcut.Key2;
+                settings.NextMonitor.Key3 = nextShortcut.Key3;
+            }
+
+            if (txtPreviousHotkeys.Tag is KeyboardShortcut previousShortcut)
+            {
+                settings.PreviousMonitor.Key1 = previousShortcut.Key1;
+                settings.PreviousMonitor.Key2 = previousShortcut.Key2;
+                settings.PreviousMonitor.Key3 = previousShortcut.Key3;
+            }
 
             if (!settings.Equals(_settings))
             {
@@ -624,14 +676,12 @@ namespace SmartSystemMenu.Forms
         private void ShowHotkeysForm(DataGridViewRow row)
         {
             var menuItem = (Settings.MenuItem)row.Tag;
-            var form = new HotkeysForm(_settings.Language, menuItem);
+            var form = new HotkeysForm(_settings.Language, menuItem.Shortcut);
             var result = form.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                menuItem.Key1 = form.MenuItem.Key1;
-                menuItem.Key2 = form.MenuItem.Key2;
-                menuItem.Key3 = form.MenuItem.Key3;
-                row.Cells[1].Value = menuItem.ToString();
+                menuItem.Shortcut = form.Shortcut;
+                row.Cells[1].Value = menuItem.Shortcut.ToString();
                 row.Tag = menuItem;
             }
         }
@@ -650,7 +700,7 @@ namespace SmartSystemMenu.Forms
                     title ??= languageSettings.GetValue(item.Name);
                     row.Tag = item;
                     row.Cells[0].Value = title;
-                    row.Cells[1].Value = item == null ? "" : item.ToString();
+                    row.Cells[1].Value = item == null ? string.Empty : item.Shortcut.ToString();
                     ((DataGridViewCheckBoxCell)row.Cells[2]).Value = item.Show;
                     ((DataGridViewCheckBoxCell)row.Cells[2]).ToolTipText = languageSettings.GetValue("clm_hotkeys_show_tooltip");
                 }
@@ -663,7 +713,7 @@ namespace SmartSystemMenu.Forms
                     row.Tag = item;
                     row.ReadOnly = true;
                     row.Cells[0].Value = title;
-                    row.Cells[1].Value = item == null ? "" : item.ToString();
+                    row.Cells[1].Value = item == null ? string.Empty : item.Shortcut.ToString();
                     ((DataGridViewCheckBoxCell)row.Cells[2]).Value = item.Show;
                     ((DataGridViewCheckBoxCell)row.Cells[2]).ToolTipText = languageSettings.GetValue("clm_hotkeys_show_tooltip");
                     ((DataGridViewDisableButtonCell)row.Cells[3]).Enabled = false;
@@ -691,7 +741,7 @@ namespace SmartSystemMenu.Forms
                             title ??= languageSettings.GetValue(subItem.Name);
                             subItemRow.Tag = subItem;
                             subItemRow.Cells[0].Value = title;
-                            subItemRow.Cells[1].Value = subItem == null ? "" : subItem.ToString();
+                            subItemRow.Cells[1].Value = subItem == null ? string.Empty : subItem.Shortcut.ToString();
                             ((DataGridViewCheckBoxCell)subItemRow.Cells[2]).Value = subItem.Show;
                             ((DataGridViewCheckBoxCell)subItemRow.Cells[2]).ToolTipText = languageSettings.GetValue("clm_hotkeys_show_tooltip");
                             var padding = subItemRow.Cells[0].Style.Padding;
@@ -706,7 +756,7 @@ namespace SmartSystemMenu.Forms
                             subItemRow.Tag = subItem;
                             subItemRow.ReadOnly = true;
                             subItemRow.Cells[0].Value = title;
-                            subItemRow.Cells[1].Value = subItem == null ? "" : subItem.ToString();
+                            subItemRow.Cells[1].Value = subItem == null ? string.Empty : subItem.Shortcut.ToString();
                             ((DataGridViewCheckBoxCell)subItemRow.Cells[2]).Value = subItem.Show;
                             ((DataGridViewCheckBoxCell)subItemRow.Cells[2]).ToolTipText = languageSettings.GetValue("clm_hotkeys_show_tooltip");
                             ((DataGridViewDisableButtonCell)subItemRow.Cells[3]).Enabled = false;
@@ -732,7 +782,7 @@ namespace SmartSystemMenu.Forms
                     row.Cells[2].Value = item.Top.HasValue ? item.Top.ToString() : string.Empty;
                     row.Cells[3].Value = item.Width.ToString();
                     row.Cells[4].Value = item.Height.ToString();
-                    row.Cells[5].Value = item.ToString();
+                    row.Cells[5].Value = item.Shortcut.ToString();
                     row.Cells[6].ToolTipText = _settings.Language.GetValue("clm_window_size_edit");
                     row.Cells[7].ToolTipText = _settings.Language.GetValue("clm_window_size_delete");
                 }
@@ -814,5 +864,6 @@ namespace SmartSystemMenu.Forms
             }
             return null;
         }
+
     }
 }

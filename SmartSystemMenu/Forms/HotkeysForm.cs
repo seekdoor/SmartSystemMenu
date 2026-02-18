@@ -10,16 +10,16 @@ namespace SmartSystemMenu.Forms
 {
     public partial class HotkeysForm : Form
     {
-        public Settings.MenuItem MenuItem { get; set; }
+        public KeyboardShortcut Shortcut { get; private set; }
 
-        public HotkeysForm(LanguageSettings settings, Settings.MenuItem menuItem)
+        public HotkeysForm(LanguageSettings settings, KeyboardShortcut shortcut)
         {
             InitializeComponent();
-            MenuItem = menuItem;
-            InitializeControls(settings, menuItem);
+            Shortcut = shortcut;
+            InitializeControls(settings, shortcut);
         }
 
-        private void InitializeControls(LanguageSettings settings, Settings.MenuItem menuItem)
+        private void InitializeControls(LanguageSettings settings, KeyboardShortcut shortcut)
         {
             Text = settings.GetValue("hotkeys_form");
             btnApply.Text = settings.GetValue("hotkeys_btn_apply");
@@ -31,35 +31,31 @@ namespace SmartSystemMenu.Forms
             cmbKey1.ValueMember = "Id";
             cmbKey1.DisplayMember = "Text";
             cmbKey1.DataSource = ((VirtualKeyModifier[])Enum.GetValues(typeof(VirtualKeyModifier))).Where(x => !string.IsNullOrEmpty(x.GetDescription())).Select(x => new { Id = x, Text = x.GetDescription() }).ToList();
-            cmbKey1.SelectedValue = menuItem.Key1;
+            cmbKey1.SelectedValue = shortcut.Key1;
 
             cmbKey2.ValueMember = "Id";
             cmbKey2.DisplayMember = "Text";
             cmbKey2.DataSource = ((VirtualKeyModifier[])Enum.GetValues(typeof(VirtualKeyModifier))).Where(x => !string.IsNullOrEmpty(x.GetDescription())).Select(x => new { Id = x, Text = x.GetDescription() }).ToList();
-            cmbKey2.SelectedValue = menuItem.Key2;
+            cmbKey2.SelectedValue = shortcut.Key2;
 
             cmbKey3.ValueMember = "Id";
             cmbKey3.DisplayMember = "Text";
             cmbKey3.DataSource = ((VirtualKey[])Enum.GetValues(typeof(VirtualKey))).Where(x => !string.IsNullOrEmpty(x.GetDescription())).Select(x => new { Id = x, Text = x.GetDescription() }).ToList();
-            cmbKey3.SelectedValue = menuItem.Key3;
+            cmbKey3.SelectedValue = shortcut.Key3;
         }
 
         private void ButtonApplyClick(object sender, EventArgs e)
         {
-            var menuItem = new Settings.MenuItem();
-            menuItem.Key1 = (VirtualKeyModifier)cmbKey1.SelectedValue;
-            menuItem.Key2 = (VirtualKeyModifier)cmbKey2.SelectedValue;
-            menuItem.Key3 = (VirtualKey)cmbKey3.SelectedValue;
-            menuItem.Name = MenuItem.Name;
-            MenuItem = menuItem;
+            Shortcut = new KeyboardShortcut();
+            Shortcut.Key1 = (VirtualKeyModifier)cmbKey1.SelectedValue;
+            Shortcut.Key2 = (VirtualKeyModifier)cmbKey2.SelectedValue;
+            Shortcut.Key3 = (VirtualKey)cmbKey3.SelectedValue;
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void ButtonCancelClick(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void ButtonCancelClick(object sender, EventArgs e) => Close();
+        
 
         private void KeyDownClick(object sender, KeyEventArgs e)
         {

@@ -41,17 +41,17 @@ namespace SmartSystemMenu.Forms
             cmbKey1.ValueMember = "Id";
             cmbKey1.DisplayMember = "Text";
             cmbKey1.DataSource = ((VirtualKeyModifier[])Enum.GetValues(typeof(VirtualKeyModifier))).Where(x => !string.IsNullOrEmpty(x.GetDescription())).Select(x => new { Id = x, Text = x.GetDescription() }).ToList();
-            cmbKey1.SelectedValue = menuItem.Key1;
+            cmbKey1.SelectedValue = menuItem.Shortcut.Key1;
 
             cmbKey2.ValueMember = "Id";
             cmbKey2.DisplayMember = "Text";
             cmbKey2.DataSource = ((VirtualKeyModifier[])Enum.GetValues(typeof(VirtualKeyModifier))).Where(x => !string.IsNullOrEmpty(x.GetDescription())).Select(x => new { Id = x, Text = x.GetDescription() }).ToList();
-            cmbKey2.SelectedValue = menuItem.Key2;
+            cmbKey2.SelectedValue = menuItem.Shortcut.Key2;
 
             cmbKey3.ValueMember = "Id";
             cmbKey3.DisplayMember = "Text";
             cmbKey3.DataSource = ((VirtualKey[])Enum.GetValues(typeof(VirtualKey))).Where(x => !string.IsNullOrEmpty(x.GetDescription())).Select(x => new { Id = x, Text = x.GetDescription() }).ToList();
-            cmbKey3.SelectedValue = menuItem.Key3;
+            cmbKey3.SelectedValue = menuItem.Shortcut.Key3;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -73,9 +73,9 @@ namespace SmartSystemMenu.Forms
 
             var menuItem = new WindowSizeMenuItem();
             menuItem.Title = txtTitle.Text;
-            menuItem.Key1 = (VirtualKeyModifier)cmbKey1.SelectedValue;
-            menuItem.Key2 = (VirtualKeyModifier)cmbKey2.SelectedValue;
-            menuItem.Key3 = (VirtualKey)cmbKey3.SelectedValue;
+            menuItem.Shortcut.Key1 = (VirtualKeyModifier)cmbKey1.SelectedValue;
+            menuItem.Shortcut.Key2 = (VirtualKeyModifier)cmbKey2.SelectedValue;
+            menuItem.Shortcut.Key3 = (VirtualKey)cmbKey3.SelectedValue;
 
             menuItem.Width = int.TryParse(txtWidth.Text, out var width) ? width : null;
             menuItem.Height = int.TryParse(txtHeight.Text, out var height) ? height : null;

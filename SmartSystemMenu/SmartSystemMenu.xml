@@ -167,6 +167,10 @@
       <item title="Kill Process By Name" fileName="taskkill.exe" arguments="/IM &quot;%Process Name%&quot; /F" useWindowWorkingDirectory="false" runAs="administrator" showWindow="false" beginParameter="%" endParameter="%" />
     </startProgramItems>
   </menuItems>
+  <mover>
+    <next key1="17" key2="18" key3="123" />
+    <previous key1="17" key2="18" key3="122" />
+  </mover>
   <closer type="" key1="" key2="" mouseButton="" />
   <dimmer color="#000000" transparency="50" />
   <sizer type="" resizableByDefault="false" />

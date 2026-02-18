@@ -105,10 +105,10 @@ namespace SmartSystemMenu.Native
         public static extern bool GetLayeredWindowAttributes(IntPtr hwnd, out uint crKey, out Byte bAlpha, out uint dwFlags);
 
         [DllImport("user32.dll")]
-        public static extern int SetWindowLong(IntPtr handle, int nIndex, int dwNewLong);
+        public static extern int SetWindowLong(IntPtr handle, int nIndex, long dwNewLong);
 
         [DllImport("user32.dll")]
-        public static extern int GetWindowLong(IntPtr handle, int nIndex);
+        public static extern long GetWindowLong(IntPtr handle, int nIndex);
 
         [DllImport("user32.dll")]
         public static extern int GetClassLong(IntPtr handle, int nIndex);

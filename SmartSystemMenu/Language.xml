@@ -217,6 +217,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Show menu item" />
       <item name="tab_settings_menu_start" value="Menu (Start Program)" />
       <item name="tab_settings_menu_size" value="Menu (Resize)" />
+      <item name="tab_settings_menu_move_to" value="Menu (Move To)" />
       <item name="tab_settings_menu_save" value="Menu (Save)" />
       <item name="tab_settings_menu_dimmer" value="Menu (Dimmer)" />
       <item name="grpb_dimmer_color" value="Color" />
@@ -238,6 +239,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Kill process with window under cursor" />
       <item name="grpb_sizer" value="How to set window size" />
       <item name="grpb_display" value="Display" />
+      <item name="grpb_next_hotkeys" value="Hotkeys →" />
+      <item name="grpb_previous_hotkeys" value="Hotkeys ←" />
       <item name="chk_enable_high_dpi" value="Enable High DPI" />
       <item name="sizer_window_with_margins" value="Window with margins" />
       <item name="sizer_window_without_margins" value="Window without margins" />
@@ -464,6 +467,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Menüpunkt anzeigen" />
       <item name="tab_settings_menu_start" value="Menü (Programm ausführen)" />
       <item name="tab_settings_menu_size" value="Menü (Fenstergröβe ändern)" />
+      <item name="tab_settings_menu_move_to" value="Menü (Verschieben zu)" />
       <item name="tab_settings_menu_save" value="Menü (Speichern)" />
       <item name="tab_settings_menu_dimmer" value="Menü (Dimmer)" />
       <item name="grpb_dimmer_color" value="Farbe" />
@@ -483,6 +487,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Prozess mit Fenster unter Cursor beenden" />
       <item name="grpb_sizer" value="Fenstergröße einstellen window" />
       <item name="grpb_display" value="Display" />
+      <item name="grpb_next_hotkeys" value="Tastaturkürzel →" />
+      <item name="grpb_previous_hotkeys" value="Tastaturkürzel ←" />
       <item name="chk_enable_high_dpi" value="Enable High DPI" />
       <item name="sizer_window_with_margins" value="Fenster mit Rändern" />
       <item name="sizer_window_without_margins" value="Fenster ohne Ränder" />
@@ -709,6 +715,7 @@
       <item name="clm_hotkeys_show_tooltip" value="显示菜单项" />
       <item name="tab_settings_menu_start" value="菜单 (启动程序)" />
       <item name="tab_settings_menu_size" value="菜单 (调整窗口大小)" />
+      <item name="tab_settings_menu_move_to" value="菜单 (移动到)" />
       <item name="tab_settings_menu_save" value="菜单 (保存)" />
       <item name="tab_settings_menu_dimmer" value="菜单 (窗户调光器)" />
       <item name="grpb_dimmer_color" value="颜色" />
@@ -730,6 +737,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="终止光标下窗口的进程" />
       <item name="grpb_sizer" value="如何设置窗口大小" />
       <item name="grpb_display" value="显示" />
+      <item name="grpb_next_hotkeys" value="热键 →" />
+      <item name="grpb_previous_hotkeys" value="热键 ←" />
       <item name="chk_enable_high_dpi" value="启用高 DPI 显示" />
       <item name="sizer_window_with_margins" value="有边距的窗口" />
       <item name="sizer_window_without_margins" value="没有边距的窗口" />
@@ -956,6 +965,7 @@
       <item name="clm_hotkeys_show_tooltip" value="顯示選單項目" />
       <item name="tab_settings_menu_start" value="選單 (啟動程式)" />
       <item name="tab_settings_menu_size" value="選單 (調整視窗大小)" />
+      <item name="tab_settings_menu_move_to" value="選單 (移動到)" />
       <item name="tab_settings_menu_save" value="選單 (儲存)" />
       <item name="tab_settings_menu_dimmer" value="選單 (窗戶調光器)" />
       <item name="grpb_dimmer_color" value="顏色" />
@@ -977,6 +987,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="終止游標下視窗的處理程序" />
       <item name="grpb_sizer" value="如何設定視窗大小" />
       <item name="grpb_display" value="顯示" />
+      <item name="grpb_next_hotkeys" value="快速鍵 →" />
+      <item name="grpb_previous_hotkeys" value="快速鍵 ←" />
       <item name="chk_enable_high_dpi" value="啟用高 DPI 顯示" />
       <item name="sizer_window_with_margins" value="有邊界的視窗" />
       <item name="sizer_window_without_margins" value="沒有邊界的視窗" />
@@ -1203,6 +1215,7 @@
       <item name="clm_hotkeys_show_tooltip" value="メニュー項目を表示" />
       <item name="tab_settings_menu_start" value="メニュー (起動プログラム)" />
       <item name="tab_settings_menu_size" value="メニュー (サイズ変更)" />
+      <item name="tab_settings_menu_move_to" value="メニュー (移動)" />
       <item name="tab_settings_menu_save" value="メニュー (保存)" />
       <item name="tab_settings_menu_dimmer" value="メニュー (窓の調光器)" />
       <item name="grpb_dimmer_color" value="色" />
@@ -1224,6 +1237,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="カーソルの下のウィンドウでプロセスを強制終了します" />
       <item name="grpb_sizer" value="ウィンドウサイズの設定方法" />
       <item name="grpb_display" value="Display" />
+      <item name="grpb_next_hotkeys" value="ホットキー →" />
+      <item name="grpb_previous_hotkeys" value="ホットキー ←" />
       <item name="chk_enable_high_dpi" value="Enable High DPI" />
       <item name="sizer_window_with_margins" value="余白のあるウィンドウ" />
       <item name="sizer_window_without_margins" value="余白のないウィンドウ" />
@@ -1450,6 +1465,7 @@
       <item name="clm_hotkeys_show_tooltip" value="메뉴 항목 표시" />
       <item name="tab_settings_menu_start" value="메뉴 (프로그램 실행)" />
       <item name="tab_settings_menu_size" value="메뉴 (크기 변경)" />
+      <item name="tab_settings_menu_move_to" value="메뉴 (이동)" />
       <item name="tab_settings_menu_save" value="메뉴 (저장)" />
       <item name="tab_settings_menu_dimmer" value="메뉴 (디머)" />
       <item name="grpb_dimmer_color" value="색상" />
@@ -1471,6 +1487,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="커서 아래 창과 함께 프로세스 종료" />
       <item name="grpb_sizer" value="창 크기를 설정하는 방법" />
       <item name="grpb_display" value="표시" />
+      <item name="grpb_next_hotkeys" value="단축키 →" />
+      <item name="grpb_previous_hotkeys" value="단축키 ←" />
       <item name="chk_enable_high_dpi" value="높은 DPI 사용" />
       <item name="sizer_window_with_margins" value="여백 있는 창" />
       <item name="sizer_window_without_margins" value="여백 없는 창" />
@@ -1697,6 +1715,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Отобразить или скрыть пункт меню" />
       <item name="tab_settings_menu_start" value="Меню (Пуск)" />
       <item name="tab_settings_menu_size" value="Меню (Изменить размер)" />
+      <item name="tab_settings_menu_move_to" value="Меню (Переместить)" />
       <item name="tab_settings_menu_save" value="Меню (Сохранить)" />
       <item name="tab_settings_menu_dimmer" value="Меню (Затемнение)" />
       <item name="grpb_dimmer_color" value="Цвет" />
@@ -1716,6 +1735,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Убить процесс с окном под курсором" />
       <item name="grpb_sizer" value="Как устанавливать размер окна" />
       <item name="grpb_display" value="Экран" />
+      <item name="grpb_next_hotkeys" value="Горячие клавиши →" />
+      <item name="grpb_previous_hotkeys" value="Горячие клавиши ←" />
       <item name="chk_enable_high_dpi" value="Включить поддержку High DPI" />
       <item name="sizer_window_with_margins" value="Окно с отступами" />
       <item name="sizer_window_without_margins" value="Окно без отступов" />
@@ -1942,6 +1963,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Прикажи ставку менија" />
       <item name="tab_settings_menu_start" value="Мени (Покренути програм)" />
       <item name="tab_settings_menu_size" value="Мени (Промени величину)" />
+      <item name="tab_settings_menu_move_to" value="Мени (Премести на)" />
       <item name="tab_settings_menu_save" value="Мени (Сачувати)" />
       <item name="tab_settings_menu_dimmer" value="Мени (Затамњивач прозора)" />
       <item name="grpb_dimmer_color" value="Боја" />
@@ -1961,6 +1983,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Процес убијања помоћу прозора испод курсора" />
       <item name="grpb_sizer" value="Како поставити величину прозора" />
       <item name="grpb_display" value="Display" />
+      <item name="grpb_next_hotkeys" value="Пречице →" />
+      <item name="grpb_previous_hotkeys" value="Пречице ←" />
       <item name="chk_enable_high_dpi" value="Enable High DPI" />
       <item name="sizer_window_with_margins" value="Прозор са маргинама" />
       <item name="sizer_window_without_margins" value="Прозор без маргина" />
@@ -2187,6 +2211,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Exibir item do menu" />
       <item name="tab_settings_menu_start" value="Menu (Executar programa)" />
       <item name="tab_settings_menu_size" value="Menu (Redimensionar)" />
+      <item name="tab_settings_menu_move_to" value="Menu (Mover para)" />
       <item name="tab_settings_menu_save" value="Menu (Salvar)" />
       <item name="tab_settings_menu_dimmer" value="Menu (Dimmer)" />
       <item name="grpb_dimmer_color" value="Cor" />
@@ -2206,6 +2231,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Encerrar executável com janela sob o cursor" />
       <item name="grpb_sizer" value="Como definir o tamanho da janela" />
       <item name="grpb_display" value="Display" />
+      <item name="grpb_next_hotkeys" value="Atalhos →" />
+      <item name="grpb_previous_hotkeys" value="Atalhos ←" />
       <item name="chk_enable_high_dpi" value="Enable High DPI" />
       <item name="sizer_window_with_margins" value="Janela com margens" />
       <item name="sizer_window_without_margins" value="Janela sem margens" />
@@ -2432,6 +2459,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Mostra voci di menu" />
       <item name="tab_settings_menu_start" value="Menu (Avvia programma)" />
       <item name="tab_settings_menu_size" value="Menu (Ridimensiona)" />
+      <item name="tab_settings_menu_move_to" value="Menu (Sposta in)" />
       <item name="tab_settings_menu_save" value="Menu (Salva)" />
       <item name="tab_settings_menu_dimmer" value="Menu (Oscuramento)" />
       <item name="grpb_dimmer_color" value="Colore" />
@@ -2453,6 +2481,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Termina processo con finestra sotto al cursore" />
       <item name="grpb_sizer" value="Impostazioni dimensione della finestra" />
       <item name="grpb_display" value="Schermo" />
+      <item name="grpb_next_hotkeys" value="Tasti rapidi →" />
+      <item name="grpb_previous_hotkeys" value="Tasti rapidi ←" />
       <item name="chk_enable_high_dpi" value="Abilita DPI elevati" />
       <item name="sizer_window_with_margins" value="Finestra con margini" />
       <item name="sizer_window_without_margins" value="Finestra senza margini" />
@@ -2679,6 +2709,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Afficher les info-bulles" />
       <item name="tab_settings_menu_start" value="Menu (lancer le programme)" />
       <item name="tab_settings_menu_size" value="Menu (redimensionner)" />
+      <item name="tab_settings_menu_move_to" value="Menu (déplacer dans)" />
       <item name="tab_settings_menu_save" value="Menu (enregistrer)" />
       <item name="tab_settings_menu_dimmer" value="Menu (dimmer)" />
       <item name="grpb_dimmer_color" value="Couleur" />
@@ -2700,6 +2731,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Terminer le processus de la fenêtre sous le curseur" />
       <item name="grpb_sizer" value="Comment définir la taille des fenêtres" />
       <item name="grpb_display" value="Affichage" />
+      <item name="grpb_next_hotkeys" value="Raccourcis clavier →" />
+      <item name="grpb_previous_hotkeys" value="Raccourcis clavier ←" />
       <item name="chk_enable_high_dpi" value="Activer le DPI élevé" />
       <item name="sizer_window_with_margins" value="Fenêtre avec bordure" />
       <item name="sizer_window_without_margins" value="Fenêtre sans bordure" />
@@ -2926,6 +2959,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Menüpont megjelenítése" />
       <item name="tab_settings_menu_start" value="Menü (programindítás hozzáadása)" />
       <item name="tab_settings_menu_size" value="Menü (átméretezés)" />
+      <item name="tab_settings_menu_move_to" value="Menü (áthelyezés ide)" />
       <item name="tab_settings_menu_save" value="Menü (mentés)" />
       <item name="tab_settings_menu_dimmer" value="Menü (dimmer)" />
       <item name="grpb_dimmer_color" value="Szín" />
@@ -2947,6 +2981,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Fejezze be a folyamatot a kurzor alatti ablakban" />
       <item name="grpb_sizer" value="Hogyan állítsuk be az ablak méretét" />
       <item name="grpb_display" value="Kijelző" />
+      <item name="grpb_next_hotkeys" value="Gyorsbillentyűk →" />
+      <item name="grpb_previous_hotkeys" value="Gyorsbillentyűk ←" />
       <item name="chk_enable_high_dpi" value="Magas DPI engedélyezése" />
       <item name="sizer_window_with_margins" value="Ablak margókkal" />
       <item name="sizer_window_without_margins" value="Ablak margók nélkül" />
@@ -3173,6 +3209,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Show menu item" />
       <item name="tab_settings_menu_start" value="תפריט (הרץ תוכנה)" />
       <item name="tab_settings_menu_size" value="תפריט (שנה גודל)" />
+      <item name="tab_settings_menu_move_to" value="תפריט (העבר אל)" />
       <item name="tab_settings_menu_save" value="תפריט (שמור)" />
       <item name="tab_settings_menu_dimmer" value="תפריט (שקיפות)" />
       <item name="grpb_dimmer_color" value="צבע" />
@@ -3194,6 +3231,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="הרוג את התהליך שבחלון שמתחת לסמן" />
       <item name="grpb_sizer" value="איך להגדיר גודל חלון" />
       <item name="grpb_display" value="הצג" />
+      <item name="grpb_next_hotkeys" value="מקשי קיצור →" />
+      <item name="grpb_previous_hotkeys" value="מקשי קיצור ←" />
       <item name="chk_enable_high_dpi" value="גבוה DPI אפשר" />
       <item name="sizer_window_with_margins" value="חלון עם שוליים" />
       <item name="sizer_window_without_margins" value="חלון ללא שוליים" />
@@ -3420,6 +3459,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Mostrar elemento de menú" />
       <item name="tab_settings_menu_start" value="Menú (Inciar programa)" />
       <item name="tab_settings_menu_size" value="Menú (Redimensionar)" />
+      <item name="tab_settings_menu_move_to" value="Menú (Mover a)" />
       <item name="tab_settings_menu_save" value="Menú (Guardar)" />
       <item name="tab_settings_menu_dimmer" value="Menú (Atenuar)" />
       <item name="grpb_dimmer_color" value="Color" />
@@ -3441,6 +3481,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Matar proceso de ventana debajo del cursor" />
       <item name="grpb_sizer" value="Cómo configurar el tamaño de la ventana" />
       <item name="grpb_display" value="Pantalla" />
+      <item name="grpb_next_hotkeys" value="Teclas de acceso rápido →" />
+      <item name="grpb_previous_hotkeys" value="Teclas de acceso rápido ←" />
       <item name="chk_enable_high_dpi" value="Habilitar DPI Alto" />
       <item name="sizer_window_with_margins" value="Ventana con márgenes" />
       <item name="sizer_window_without_margins" value="Ventana sin márgenes" />
@@ -3667,6 +3709,7 @@
       <item name="clm_hotkeys_show_tooltip" value="Prikaži element menija" />
       <item name="tab_settings_menu_start" value="Meni (Zaženi program)" />
       <item name="tab_settings_menu_size" value="Meni (Spremeni velikost)" />
+      <item name="tab_settings_menu_move_to" value="Meni (Premakni na)" />
       <item name="tab_settings_menu_save" value="Meni (Shrani)" />
       <item name="tab_settings_menu_dimmer" value="Meni (Zatemnitev)" />
       <item name="grpb_dimmer_color" value="Barva" />
@@ -3688,6 +3731,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="Ustavi proces z oknom pod kazalcem" />
       <item name="grpb_sizer" value="Kako nastaviti velikost okna" />
       <item name="grpb_display" value="Zaslon" />
+      <item name="grpb_next_hotkeys" value="Bližnjice →" />
+      <item name="grpb_previous_hotkeys" value="Bližnjice ←" />
       <item name="chk_enable_high_dpi" value="Omogoči High DPI" />
       <item name="sizer_window_with_margins" value="Okno z robovi" />
       <item name="sizer_window_without_margins" value="Okno brez robov" />
@@ -3914,6 +3959,7 @@
       <item name="clm_hotkeys_show_tooltip" value="பட்டி உருப்படியைக் காட்டு" />
       <item name="tab_settings_menu_start" value="பட்டி (நிரலைத் தொடங்கு)" />
       <item name="tab_settings_menu_size" value="பட்டி (அளவை மாற்று)" />
+      <item name="tab_settings_menu_move_to" value="பட்டி (இதற்கு நகர்த்து)" />
       <item name="tab_settings_menu_save" value="பட்டி (சேமி)" />
       <item name="tab_settings_menu_dimmer" value="பட்டி (டிம்மர்)" />
       <item name="grpb_dimmer_color" value="நிறம்" />
@@ -3935,6 +3981,8 @@
       <item name="closer_kill_process_with_window_under_cursor" value="சுட்டியின் கீழ் உள்ள சாளரத்துடன் கூடிய செயல்முறையை நிறுத்து" />
       <item name="grpb_sizer" value="சாளர அளவை அமைப்பது எப்படி" />
       <item name="grpb_display" value="காட்சி" />
+      <item name="grpb_next_hotkeys" value="ஹாட்கீகள →" />
+      <item name="grpb_previous_hotkeys" value="ஹாட்கீகள ←" />
       <item name="chk_enable_high_dpi" value="உயர் DPI-ஐ இயக்கு" />
       <item name="sizer_window_with_margins" value="விளிம்புகளுடன் கூடிய சாளரம்" />
       <item name="sizer_window_without_margins" value="விளிம்புகள் இல்லாத சாளரம்" />

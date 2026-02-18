@@ -103,8 +103,8 @@ namespace SmartSystemMenu
         {
             get
             {
-                int style = GetWindowLong(Handle, GWL_EXSTYLE);
-                bool isLayeredWindow = (style & WS_EX_LAYERED) == WS_EX_LAYERED;
+                var style = GetWindowLong(Handle, GWL_EXSTYLE);
+                var isLayeredWindow = (style & WS_EX_LAYERED) == WS_EX_LAYERED;
                 if (!isLayeredWindow) return 0;
                 GetLayeredWindowAttributes(Handle, out var _, out var alpha, out var _);
                 return WindowUtils.AlphaOpacityToTransparency(alpha);

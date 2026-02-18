@@ -27,8 +27,9 @@ namespace SmartSystemMenu.Forms
         private GetMsgHook _getMsgHook;
         private ShellHook _shellHook;
         private CBTHook _cbtHook;
+        private HotKeyHook _hotKeyHook;
         private AboutForm _aboutForm;
-        private SettingsForm _settingsForm;
+        private ApplicationSettingsForm _settingsForm;
         private readonly List<DimForm> _dimForms;
         private ApplicationSettings _settings;
         private readonly WindowSettings _windowSettings;
@@ -38,7 +39,6 @@ namespace SmartSystemMenu.Forms
 
 #if WIN32
         private SystemTrayMenu _systemTrayMenu;
-        private HotKeyHook _hotKeyHook;
         private MouseHook _hotKeyMouseHook;
         private Process _64BitProcess;
 #endif
@@ -58,6 +58,9 @@ namespace SmartSystemMenu.Forms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            using var process = Process.GetCurrentProcess();
+            using var mainModule = process.MainModule;
 
 #if WIN32
             if (Environment.Is64BitOperatingSystem)
@@ -95,23 +98,14 @@ namespace SmartSystemMenu.Forms
                 _systemTrayMenu.CheckMenuItemAutoStart(AutoStarter.IsAutoStartByRegisterEnabled(AssemblyUtils.AssemblyProductName, AssemblyUtils.AssemblyLocation));
             }
 
-            var moduleName = Process.GetCurrentProcess().MainModule.ModuleName;
-
-            _hotKeyHook = new HotKeyHook();
-            _hotKeyHook.Hooked += HotKeyHooked;
-            if (_settings.MenuItems.Items.Flatten(x => x.Items).Any(x => x.Type == MenuItemType.Item && x.Key3 != VirtualKey.None && x.Show) || _settings.MenuItems.WindowSizeItems.Any(x => x.Key3 != VirtualKey.None))
-            {
-                _hotKeyHook.Start(moduleName, _settings.MenuItems);
-            }
-
             _hotKeyMouseHook = new MouseHook();
             _hotKeyMouseHook.Hooked += HotKeyMouseHooked;
             if (_settings.Closer.MouseButton != MouseButton.None)
             {
-                _hotKeyMouseHook.Start(moduleName, _settings.Closer.Key1, _settings.Closer.Key2, _settings.Closer.MouseButton);
+                _hotKeyMouseHook.Start(mainModule.ModuleName, _settings.Closer.Key1, _settings.Closer.Key2, _settings.Closer.MouseButton);
             }
-
 #endif
+
             if (_parentHandle != IntPtr.Zero)
             {
                 var ptrCopyData = SystemUtils.BuildWmCopyDataPointer(SEND_CHILD_HANDLE, Handle.ToInt64().ToString());
@@ -176,6 +170,11 @@ namespace SmartSystemMenu.Forms
             _cbtHook.MinMax += WindowMinMax;
             _cbtHook.Activate += WindowActivate;
             _cbtHook.Start();
+
+            _hotKeyHook = new HotKeyHook();
+            _hotKeyHook.MenuItemHooked += HotKeyHooked;
+            _hotKeyHook.MoveToHooked += MoveToHooked;
+            _hotKeyHook.Start(_settings, mainModule.ModuleName);
 
             Hide();
         }
@@ -324,7 +323,7 @@ namespace SmartSystemMenu.Forms
         {
             if (_settingsForm == null || _settingsForm.IsDisposed || !_settingsForm.IsHandleCreated)
             {
-                _settingsForm = new SettingsForm(_settings);
+                _settingsForm = new ApplicationSettingsForm(_settings);
                 _settingsForm.OkClick += (object s, EventArgs<ApplicationSettings> ea) => { _settings = ea.Entity; };
             }
 
@@ -1200,6 +1199,54 @@ namespace SmartSystemMenu.Forms
                     e.Succeeded = true;
                 }
             }
+        }
+
+        private void MoveToHooked(object sender, HotKeyEventArgs e)
+        {
+            var monitorHandles = SystemUtils.GetMonitors();
+            if (monitorHandles.Count < 2)
+            {
+                return;
+            }
+
+            var handle = GetForegroundWindow();
+            var window = _windows.TryGetValue(handle, out var win) ? win : null;
+            if (window == null)
+            {
+                handle = WindowUtils.GetParentWindow(handle);
+                if (handle == IntPtr.Zero || WindowUtils.IsDesktopWindow(handle))
+                {
+                    return;
+                }
+
+                window = _windows.TryGetValue(handle, out var parentWin) ? parentWin : null;
+                if (window == null)
+                {
+                    return;
+                }
+            }
+
+            var monitorHandle = MonitorFromWindow(handle, MONITOR_DEFAULTTONEAREST);
+            var monitor = monitorHandles.Select((x, i) => new { Handle = x, Index = i }).Where(x => x.Handle == monitorHandle).FirstOrDefault();
+            if (monitor == null)
+            {
+                return;
+            }
+
+            var monitorIndex = monitor.Index;
+            if (e.NextMonitor)
+            {
+                monitorIndex = monitorIndex == (monitorHandles.Count - 1) ? 0 : monitorIndex + 1;
+            }
+
+            if (e.PreviousMonitor)
+            {
+                monitorIndex = monitorIndex == 0 ? monitorHandles.Count - 1 : monitorIndex - 1;
+            }
+
+            monitorHandle = monitorHandles[monitorIndex];
+            window.MoveToMonitor(monitorHandle);
+            e.Succeeded = true;
         }
 
         private void SetPriorityMenuItem(Window window, int itemId)

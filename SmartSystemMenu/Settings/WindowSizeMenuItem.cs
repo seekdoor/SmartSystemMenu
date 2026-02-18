@@ -1,6 +1,4 @@
 ﻿using System;
-using SmartSystemMenu.Extensions;
-using SmartSystemMenu.HotKeys;
 
 namespace SmartSystemMenu.Settings
 {
@@ -20,11 +18,7 @@ namespace SmartSystemMenu.Settings
 
         public int? Height { get; set; }
 
-        public VirtualKeyModifier Key1 { get; set; }
-
-        public VirtualKeyModifier Key2 { get; set; }
-
-        public VirtualKey Key3 { get; set; }
+        public KeyboardShortcut Shortcut { get; set; }
 
         public WindowSizeMenuItem()
         {
@@ -35,37 +29,14 @@ namespace SmartSystemMenu.Settings
             Top = null;
             Width = null;
             Height = null;
-            Key1 = VirtualKeyModifier.None;
-            Key2 = VirtualKeyModifier.None;
-            Key3 = VirtualKey.None;
+            Shortcut = new KeyboardShortcut();
         }
 
-        public object Clone() => MemberwiseClone();
-
-        public override string ToString()
+        public object Clone()
         {
-            var combination = string.Empty;
-
-            if (Key1 != VirtualKeyModifier.None)
-            {
-                combination = Key1.GetDescription();
-            }
-
-            if (Key2 != VirtualKeyModifier.None)
-            {
-                combination += string.IsNullOrEmpty(combination) ? Key2.GetDescription() : "+" + Key2.GetDescription();
-            }
-
-            if (Key3 != VirtualKey.None)
-            {
-                combination += string.IsNullOrEmpty(combination) ? Key3.GetDescription() : "+" + Key3.GetDescription();
-            }
-            else
-            {
-                combination = string.Empty;
-            }
-
-            return combination;
+            var menuItemClone = (WindowSizeMenuItem)MemberwiseClone();
+            menuItemClone.Shortcut = (KeyboardShortcut)Shortcut.Clone();
+            return menuItemClone;
         }
     }
 }

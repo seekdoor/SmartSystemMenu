@@ -29,6 +29,10 @@ namespace SmartSystemMenu.Settings
 
         public LanguageSettings Language { get; set; }
 
+        public KeyboardShortcut NextMonitor { get; set; }
+
+        public KeyboardShortcut PreviousMonitor { get; set; }
+
 
         public ApplicationSettings()
         {
@@ -44,6 +48,8 @@ namespace SmartSystemMenu.Settings
             EnableHighDPI = false;
             LanguageName = "";
             Language = new LanguageSettings();
+            NextMonitor = new KeyboardShortcut();
+            PreviousMonitor = new KeyboardShortcut();
         }
 
         public object Clone()
@@ -67,17 +73,17 @@ namespace SmartSystemMenu.Settings
 
             foreach (var menuItem in MenuItems.WindowSizeItems)
             {
-                settings.MenuItems.WindowSizeItems.Add(new WindowSizeMenuItem { Title = menuItem.Title, Width = menuItem.Width, Height = menuItem.Height });
+                settings.MenuItems.WindowSizeItems.Add((WindowSizeMenuItem)menuItem.Clone());
             }
 
             foreach (var menuItem in MenuItems.StartProgramItems)
             {
-                settings.MenuItems.StartProgramItems.Add(new StartProgramMenuItem { Title = menuItem.Title, FileName = menuItem.FileName, Arguments = menuItem.Arguments });
+                settings.MenuItems.StartProgramItems.Add((StartProgramMenuItem)menuItem.Clone());
             }
 
             foreach (var menuItem in MenuItems.Items)
             {
-                settings.MenuItems.Items.Add(new MenuItem { Name = menuItem.Name, Key1 = menuItem.Key1, Key2 = menuItem.Key2, Key3 = menuItem.Key3 });
+                settings.MenuItems.Items.Add((MenuItem)menuItem.Clone());
             }
 
             foreach (var languageItemKey in Language.Items.Keys)
@@ -92,6 +98,8 @@ namespace SmartSystemMenu.Settings
             settings.ShowSystemTrayIcon = ShowSystemTrayIcon;
             settings.EnableHighDPI = EnableHighDPI;
             settings.LanguageName = LanguageName;
+            settings.NextMonitor = (KeyboardShortcut)NextMonitor.Clone();
+            settings.PreviousMonitor = (KeyboardShortcut)PreviousMonitor.Clone();
             return settings;
         }
 
@@ -194,9 +202,9 @@ namespace SmartSystemMenu.Settings
                     MenuItems.WindowSizeItems[i].Top != other.MenuItems.WindowSizeItems[i].Top ||
                     MenuItems.WindowSizeItems[i].Width != other.MenuItems.WindowSizeItems[i].Width ||
                     MenuItems.WindowSizeItems[i].Height != other.MenuItems.WindowSizeItems[i].Height ||
-                    MenuItems.WindowSizeItems[i].Key1 != other.MenuItems.WindowSizeItems[i].Key1 ||
-                    MenuItems.WindowSizeItems[i].Key2 != other.MenuItems.WindowSizeItems[i].Key2 ||
-                    MenuItems.WindowSizeItems[i].Key3 != other.MenuItems.WindowSizeItems[i].Key3)
+                    MenuItems.WindowSizeItems[i].Shortcut.Key1 != other.MenuItems.WindowSizeItems[i].Shortcut.Key1 ||
+                    MenuItems.WindowSizeItems[i].Shortcut.Key2 != other.MenuItems.WindowSizeItems[i].Shortcut.Key2 ||
+                    MenuItems.WindowSizeItems[i].Shortcut.Key3 != other.MenuItems.WindowSizeItems[i].Shortcut.Key3)
                 {
                     return false;
                 }
@@ -222,9 +230,9 @@ namespace SmartSystemMenu.Settings
                 if (string.Compare(MenuItems.Items[i].Name, other.MenuItems.Items[i].Name, StringComparison.CurrentCultureIgnoreCase) != 0 ||
                     MenuItems.Items[i].Show != other.MenuItems.Items[i].Show ||
                     MenuItems.Items[i].Type != other.MenuItems.Items[i].Type ||
-                    MenuItems.Items[i].Key1 != other.MenuItems.Items[i].Key1 ||
-                    MenuItems.Items[i].Key2 != other.MenuItems.Items[i].Key2 ||
-                    MenuItems.Items[i].Key3 != other.MenuItems.Items[i].Key3)
+                    MenuItems.Items[i].Shortcut.Key1 != other.MenuItems.Items[i].Shortcut.Key1 ||
+                    MenuItems.Items[i].Shortcut.Key2 != other.MenuItems.Items[i].Shortcut.Key2 ||
+                    MenuItems.Items[i].Shortcut.Key3 != other.MenuItems.Items[i].Shortcut.Key3)
                 {
                     return false;
                 }
@@ -239,9 +247,9 @@ namespace SmartSystemMenu.Settings
                     if (string.Compare(MenuItems.Items[i].Items[j].Name, other.MenuItems.Items[i].Items[j].Name, StringComparison.CurrentCultureIgnoreCase) != 0 ||
                         MenuItems.Items[i].Items[j].Show != other.MenuItems.Items[i].Items[j].Show ||
                         MenuItems.Items[i].Items[j].Type != other.MenuItems.Items[i].Items[j].Type ||
-                        MenuItems.Items[i].Items[j].Key1 != other.MenuItems.Items[i].Items[j].Key1 ||
-                        MenuItems.Items[i].Items[j].Key2 != other.MenuItems.Items[i].Items[j].Key2 ||
-                        MenuItems.Items[i].Items[j].Key3 != other.MenuItems.Items[i].Items[j].Key3)
+                        MenuItems.Items[i].Items[j].Shortcut.Key1 != other.MenuItems.Items[i].Items[j].Shortcut.Key1 ||
+                        MenuItems.Items[i].Items[j].Shortcut.Key2 != other.MenuItems.Items[i].Items[j].Shortcut.Key2 ||
+                        MenuItems.Items[i].Items[j].Shortcut.Key3 != other.MenuItems.Items[i].Items[j].Shortcut.Key3)
                     {
                         return false;
                     }
@@ -259,6 +267,16 @@ namespace SmartSystemMenu.Settings
             }
 
             if (Sizer.SizerType != other.Sizer.SizerType || Sizer.ResizableByDefault != other.Sizer.ResizableByDefault)
+            {
+                return false;
+            }
+
+            if (NextMonitor.Key1 != other.NextMonitor.Key1 || NextMonitor.Key2 != other.NextMonitor.Key2 || NextMonitor.Key3 != other.NextMonitor.Key3)
+            {
+                return false;
+            }
+
+            if (PreviousMonitor.Key1 != other.PreviousMonitor.Key1 || PreviousMonitor.Key2 != other.PreviousMonitor.Key2 || PreviousMonitor.Key3 != other.PreviousMonitor.Key3)
             {
                 return false;
             }
@@ -315,7 +333,7 @@ namespace SmartSystemMenu.Settings
 
             foreach (var item in MenuItems.WindowSizeItems)
             {
-                hashCode ^= item.Title.GetHashCode() ^ item.Left.GetHashCode() ^ item.Top.GetHashCode() ^ item.Width.GetHashCode() ^ item.Height.GetHashCode() ^ item.Key1.GetHashCode() ^ item.Key2.GetHashCode() ^ item.Key3.GetHashCode();
+                hashCode ^= item.Title.GetHashCode() ^ item.Left.GetHashCode() ^ item.Top.GetHashCode() ^ item.Width.GetHashCode() ^ item.Height.GetHashCode() ^ item.Shortcut.Key1.GetHashCode() ^ item.Shortcut.Key2.GetHashCode() ^ item.Shortcut.Key3.GetHashCode();
             }
 
             foreach (var item in MenuItems.StartProgramItems)
@@ -325,10 +343,10 @@ namespace SmartSystemMenu.Settings
 
             foreach (var item in MenuItems.Items)
             {
-                hashCode ^= item.Show.GetHashCode() ^ item.Type.GetHashCode() ^  item.Name.GetHashCode() ^ item.Key1.GetHashCode() ^ item.Key2.GetHashCode() ^ item.Key3.GetHashCode();
+                hashCode ^= item.Show.GetHashCode() ^ item.Type.GetHashCode() ^  item.Name.GetHashCode() ^ item.Shortcut.Key1.GetHashCode() ^ item.Shortcut.Key2.GetHashCode() ^ item.Shortcut.Key3.GetHashCode();
                 foreach (var subItem in item.Items)
                 {
-                    hashCode ^= subItem.Show.GetHashCode() ^ subItem.Type.GetHashCode() ^ subItem.Name.GetHashCode() ^ subItem.Key1.GetHashCode() ^ subItem.Key2.GetHashCode() ^ subItem.Key3.GetHashCode();
+                    hashCode ^= subItem.Show.GetHashCode() ^ subItem.Type.GetHashCode() ^ subItem.Name.GetHashCode() ^ subItem.Shortcut.Key1.GetHashCode() ^ subItem.Shortcut.Key2.GetHashCode() ^ subItem.Shortcut.Key3.GetHashCode();
                 }
             }
 
@@ -352,6 +370,13 @@ namespace SmartSystemMenu.Settings
             hashCode ^= LanguageName.GetHashCode();
             hashCode ^= ShowSystemTrayIcon.GetHashCode();
             hashCode ^= EnableHighDPI.GetHashCode();
+            hashCode ^= NextMonitor.Key1.GetHashCode();
+            hashCode ^= NextMonitor.Key2.GetHashCode();
+            hashCode ^= NextMonitor.Key3.GetHashCode();
+            hashCode ^= PreviousMonitor.Key1.GetHashCode();
+            hashCode ^= PreviousMonitor.Key2.GetHashCode();
+            hashCode ^= PreviousMonitor.Key3.GetHashCode();
+
             return hashCode;
         }
     }

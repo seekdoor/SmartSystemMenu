@@ -136,12 +136,17 @@ namespace SmartSystemMenu.Utils
 
         public static IntPtr GetParentWindow(IntPtr hWnd)
         {
-            IntPtr parentHwnd;
-            var resultHwnd = hWnd;
-            while ((parentHwnd = GetParent(resultHwnd)) != IntPtr.Zero)
+            IntPtr resultHwnd;
+            var parentHwnd = hWnd;
+            do
             {
                 resultHwnd = parentHwnd;
-            }
+                var windowStyle = GetWindowLong(resultHwnd, GWL_STYLE);
+                if ((windowStyle & WS_CAPTION) != 0 || (windowStyle & WS_SYSMENU) != 0 || (windowStyle & WS_POPUP) != 0)
+                {
+                    return resultHwnd;
+                }
+            } while ((parentHwnd = GetParent(resultHwnd)) != IntPtr.Zero);
             return resultHwnd;
         }
 
@@ -463,6 +468,12 @@ namespace SmartSystemMenu.Utils
             User32.RealGetWindowClass(hWnd, builder, builder.Capacity);
             var className = builder.ToString();
             return className;
+        }
+
+        public static bool IsDesktopWindow(IntPtr hWnd)
+        {
+            var className = GetClassName(hWnd);
+            return className == "WorkerW" || className == "Progman" || hWnd == GetDesktopWindow() || hWnd == GetShellWindow();
         }
 
         public static string ExtractTextFromWindow(IntPtr hWnd)

@@ -6,7 +6,15 @@ namespace SmartSystemMenu.HotKeys
     {
         public int MenuItemId { get; }
 
+        public bool NextMonitor { get; set; }
+
+        public bool PreviousMonitor { get; set; }
+
         public bool Succeeded { get; set; }
+
+        public HotKeyEventArgs()
+        {
+        }
 
         public HotKeyEventArgs(int menuItemId)
         {

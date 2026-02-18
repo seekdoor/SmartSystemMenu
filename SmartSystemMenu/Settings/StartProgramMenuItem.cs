@@ -39,10 +39,6 @@ namespace SmartSystemMenu.Settings
             EndParameter = string.Empty;
         }
 
-        public object Clone()
-        {
-            var menuItemClone = (StartProgramMenuItem)MemberwiseClone();
-            return menuItemClone;
-        }
+        public object Clone() => MemberwiseClone();
     }
 }
