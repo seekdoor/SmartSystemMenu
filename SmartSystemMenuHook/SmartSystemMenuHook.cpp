@@ -19,17 +19,17 @@ HHOOK hookGetMsg = NULL;
 //
 HINSTANCE g_appInstance = NULL;
 
-typedef void (CALLBACK *HookProc)(int code, WPARAM w, LPARAM l);
+typedef void (CALLBACK *HookProc)(int nCode, WPARAM wParam, LPARAM lParam);
 
-static LRESULT CALLBACK CbtHookCallback(int code, WPARAM wparam, LPARAM lparam);
-static LRESULT CALLBACK ShellHookCallback(int code, WPARAM wparam, LPARAM lparam);
-static LRESULT CALLBACK CallWndProcHookCallback(int code, WPARAM wparam, LPARAM lparam);
-static LRESULT CALLBACK GetMsgHookCallback(int code, WPARAM wparam, LPARAM lparam);
-static LRESULT CALLBACK WndProcMinMax(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+static LRESULT CALLBACK CbtHookCallback(int nCode, WPARAM wParam, LPARAM lParam);
+static LRESULT CALLBACK ShellHookCallback(int nCode, WPARAM wParam, LPARAM lParam);
+static LRESULT CALLBACK CallWndProcHookCallback(int nCode, WPARAM wParam, LPARAM lParam);
+static LRESULT CALLBACK GetMsgHookCallback(int nCode, WPARAM wParam, LPARAM lParam);
+static LRESULT CALLBACK WndProcMinMax(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-HWND GetTopLevelWindow(HWND hwnd)
+HWND GetTopLevelWindow(HWND hWnd)
 {
-    HWND result = hwnd;
+    HWND result = hWnd;
     while (GetParent(result) != 0)
     { 
         result = GetParent(result);
@@ -58,30 +58,30 @@ DLLEXPORT void __stdcall UninitializeCbtHook()
     hookCbt = NULL;
 }
 
-static LRESULT CALLBACK CbtHookCallback(int code, WPARAM wparam, LPARAM lparam)
+static LRESULT CALLBACK CbtHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (code >= 0)
+    if (nCode >= 0)
     {
         UINT msg = 0;
 
-        if (code == HCBT_CREATEWND)
+        if (nCode == HCBT_CREATEWND)
             msg = WM_SSM_HOOK_HCBT_CREATEWND;
-        else if (code == HCBT_DESTROYWND)
+        else if (nCode == HCBT_DESTROYWND)
             msg = WM_SSM_HOOK_HCBT_DESTROYWND;
-        else if (code == HCBT_MINMAX)
+        else if (nCode == HCBT_MINMAX)
             msg = WM_SSM_HOOK_HCBT_MINMAX;
-        else if (code == HCBT_MOVESIZE)
+        else if (nCode == HCBT_MOVESIZE)
             msg = WM_SSM_HOOK_HCBT_MOVESIZE;
-        else if (code == HCBT_ACTIVATE)
+        else if (nCode == HCBT_ACTIVATE)
             msg = WM_SSM_HOOK_HCBT_ACTIVATE;
 
-        if (msg != 0 && GetSystemMenu((HWND)wparam, false) != NULL)
+        if (msg != 0 && GetSystemMenu((HWND)wParam, false) != NULL)
         {
-            SendNotifyMessage(hwndMain, msg, wparam, lparam);
+            SendNotifyMessage(hwndMain, msg, wParam, lParam);
         }
     }
 
-    return CallNextHookEx(hookCbt, code, wparam, lparam);
+    return CallNextHookEx(hookCbt, nCode, wParam, lParam);
 }
 
 DLLEXPORT bool __stdcall InitializeShellHook(int threadID, HWND destination)
@@ -105,24 +105,24 @@ DLLEXPORT void __stdcall UninitializeShellHook()
     hookShell = NULL;
 }
 
-static LRESULT CALLBACK ShellHookCallback(int code, WPARAM wparam, LPARAM lparam)
+static LRESULT CALLBACK ShellHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (code >= 0)
+    if (nCode >= 0)
     {
         UINT msg = 0;
 
-        if (code == HSHELL_WINDOWCREATED)
+        if (nCode == HSHELL_WINDOWCREATED)
             msg = WM_SSM_HOOK_HSHELL_WINDOWCREATED;
-        else if (code == HSHELL_WINDOWDESTROYED)
+        else if (nCode == HSHELL_WINDOWDESTROYED)
             msg = WM_SSM_HOOK_HSHELL_WINDOWDESTROYED;
 
-        if (msg != 0 && GetSystemMenu((HWND)wparam, false) != NULL)
+        if (msg != 0 && GetSystemMenu((HWND)wParam, false) != NULL)
         {
-            SendNotifyMessage(hwndMain, msg, wparam, lparam);
+            SendNotifyMessage(hwndMain, msg, wParam, lParam);
         }
     }
 
-    return CallNextHookEx(hookShell, code, wparam, lparam);
+    return CallNextHookEx(hookShell, nCode, wParam, lParam);
 }
 
 DLLEXPORT bool __stdcall InitializeCallWndProcHook(int threadID, HWND destination)
@@ -146,11 +146,11 @@ DLLEXPORT void __stdcall UninitializeCallWndProcHook()
     hookCallWndProc = NULL;
 }
 
-static LRESULT CALLBACK CallWndProcHookCallback(int code, WPARAM wparam, LPARAM lparam)
+static LRESULT CALLBACK CallWndProcHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (code >= 0)
+    if (nCode >= 0)
     {
-        CWPSTRUCT* pCwpStruct = (CWPSTRUCT*)lparam;
+        auto pCwpStruct = (CWPSTRUCT*)lParam;
         switch (pCwpStruct->message)
         {
             case WM_SYSCOMMAND:
@@ -166,13 +166,13 @@ static LRESULT CALLBACK CallWndProcHookCallback(int code, WPARAM wparam, LPARAM 
 
             case WM_GETMINMAXINFO:
             {
-                HMENU systemMenu = GetSystemMenu(pCwpStruct->hwnd, false);
+                auto systemMenu = GetSystemMenu(pCwpStruct->hwnd, false);
                 if (systemMenu)
                 {
-                    UINT menuItemRollUpState = GetMenuState(systemMenu, SC_ROLLUP, MF_BYCOMMAND);
-                    UINT menuItemResizableState = GetMenuState(systemMenu, SC_RESIZABLE, MF_BYCOMMAND);
-                    bool isMenuItemRollUpChecked = menuItemRollUpState != -1 && (menuItemRollUpState & MF_CHECKED) != 0;
-                    bool isMenuItemResizableChecked = menuItemResizableState != -1 && (menuItemResizableState & MF_CHECKED) != 0;
+                    auto menuItemRollUpState = GetMenuState(systemMenu, SC_ROLLUP, MF_BYCOMMAND);
+                    auto menuItemResizableState = GetMenuState(systemMenu, SC_RESIZABLE, MF_BYCOMMAND);
+                    auto isMenuItemRollUpChecked = menuItemRollUpState != -1 && (menuItemRollUpState & MF_CHECKED) != 0;
+                    auto isMenuItemResizableChecked = menuItemResizableState != -1 && (menuItemResizableState & MF_CHECKED) != 0;
                     if (isMenuItemRollUpChecked || isMenuItemResizableChecked)
                     {
                         LONG_PTR proc = SetWindowLongPtr(pCwpStruct->hwnd, GWLP_WNDPROC, (LONG_PTR)WndProcMinMax);
@@ -183,7 +183,7 @@ static LRESULT CALLBACK CallWndProcHookCallback(int code, WPARAM wparam, LPARAM 
         }
     }
 
-    return CallNextHookEx(hookCallWndProc, code, wparam, lparam);
+    return CallNextHookEx(hookCallWndProc, nCode, wParam, lParam);
 }
 
 DLLEXPORT bool __stdcall InitializeGetMsgHook(int threadID, HWND destination)
@@ -207,11 +207,11 @@ DLLEXPORT void __stdcall UninitializeGetMsgHook()
     hookGetMsg = NULL;
 }
 
-static LRESULT CALLBACK GetMsgHookCallback(int code, WPARAM wparam, LPARAM lparam)
+static LRESULT CALLBACK GetMsgHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (code >= 0 && wparam == PM_REMOVE)
+    if (nCode >= 0 && wParam == PM_REMOVE)
     {
-        MSG* pMsg = (MSG*)lparam;
+        auto pMsg = (MSG*)lParam;
         switch (pMsg->message)
         {
             case WM_SYSCOMMAND:
@@ -227,36 +227,36 @@ static LRESULT CALLBACK GetMsgHookCallback(int code, WPARAM wparam, LPARAM lpara
 
             case WM_LBUTTONDOWN:
             {
-                HWND hwnd = GetTopLevelWindow(pMsg->hwnd);
-                HMENU systemMenu = GetSystemMenu(hwnd, false);
+                auto hwnd = GetTopLevelWindow(pMsg->hwnd);
+                auto systemMenu = GetSystemMenu(hwnd, false);
                 if (systemMenu)
                 {
-                    UINT menuItemDragByMouseState = GetMenuState(systemMenu, SC_DRAG_BY_MOUSE, MF_BYCOMMAND);
-                    bool isMenuItemDragByMouseChecked = menuItemDragByMouseState != -1 && (menuItemDragByMouseState & MF_CHECKED) != 0;
+                    auto menuItemDragByMouseState = GetMenuState(systemMenu, SC_DRAG_BY_MOUSE, MF_BYCOMMAND);
+                    auto isMenuItemDragByMouseChecked = menuItemDragByMouseState != -1 && (menuItemDragByMouseState & MF_CHECKED) != 0;
                     if (isMenuItemDragByMouseChecked)
                     {
                         ReleaseCapture();
-                        SendMessage(hwnd, WM_SYSCOMMAND, 61458, 0);
+                        SendMessage(hwnd, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
                     }
                 }
             } break;
         }
     }
 
-    return CallNextHookEx(hookGetMsg, code, wparam, lparam);
+    return CallNextHookEx(hookGetMsg, nCode, wParam, lParam);
 }
 
-static LRESULT CALLBACK WndProcMinMax(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK WndProcMinMax(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    HANDLE hdl = GetProp(hwnd, L"_ssm_old_wnd_proc_");
-    RemoveProp(hwnd, L"_ssm_old_wnd_proc_");
-    SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)(hdl));
+    HANDLE hdl = GetProp(hWnd, L"_ssm_old_wnd_proc_");
+    RemoveProp(hWnd, L"_ssm_old_wnd_proc_");
+    SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)(hdl));
 
     switch (uMsg)
     {
         case WM_GETMINMAXINFO:
         {
-            MINMAXINFO* minmax = (MINMAXINFO*)(lParam);
+            auto minmax = (MINMAXINFO*)(lParam);
             minmax->ptMinTrackSize.x = 0;
             minmax->ptMinTrackSize.y = 0;
             minmax->ptMaxTrackSize.x = LONG_MAX;
@@ -268,7 +268,7 @@ static LRESULT CALLBACK WndProcMinMax(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 
         case WM_WINDOWPOSCHANGING:
         {
-            WINDOWPOS* wpos = (WINDOWPOS*)(lParam);
+            auto wpos = (WINDOWPOS*)(lParam);
             wpos->cx = 0;
             wpos->cy = 0;
         } break;
@@ -277,6 +277,8 @@ static LRESULT CALLBACK WndProcMinMax(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
             break;
 
         default:
-            return CallWindowProc((WNDPROC)(hdl), hwnd, uMsg, wParam, lParam);
+            return CallWindowProc((WNDPROC)(hdl), hWnd, uMsg, wParam, lParam);
     }
+
+    return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
